@@ -181,7 +181,8 @@ export function normalizeArc(raw: unknown, beats: Beat[]): { throughline: string
 export function normalizeTakes(raw: unknown, beats: Beat[], positions: string): Take[] {
   const record = raw as { takes?: unknown } | null;
   const list = Array.isArray(record?.takes) ? record.takes : [];
-  const urls = new Set((positions.match(/https?:\/\/[^\s)]+/g) ?? []).map((url) => url.replace(/[.,;:]+$/, "")));
+  // 網址後面常黏著全形標點（）、，。）；抽取時一併切掉，模型回的引用才對得上
+  const urls = new Set((positions.match(/https?:\/\/[^\s)）】」、，。；：]+/g) ?? []).map((url) => url.replace(/[.,;:]+$/, "")));
   const byId = new Map<string, Take>();
   for (const item of list) {
     if (typeof item !== "object" || item === null) continue;
@@ -189,7 +190,7 @@ export function normalizeTakes(raw: unknown, beats: Beat[], positions: string): 
     const beatId = sanitize(entry.beatId, 20);
     const take = sanitize(entry.take, 400).replace(/[—–]/g, ",");
     if (!beats.some((beat) => beat.beatId === beatId) || !take) continue;
-    const citations = (Array.isArray(entry.citations) ? entry.citations : []).map((url) => sanitize(url, 500)).filter((url) => urls.has(url));
+    const citations = (Array.isArray(entry.citations) ? entry.citations : []).map((url) => sanitize(url, 500).replace(/[）】」、，。；：.,;:]+$/, "")).filter((url) => urls.has(url));
     byId.set(beatId, { beatId, take, grounded: citations.length > 0, citations });
   }
   return beats.map((beat) => byId.get(beat.beatId) ?? { beatId: beat.beatId, take: "這一段我還沒有可以引用的公開立場；我會把它列入追蹤，並在回覆裡說明。", grounded: false, citations: [] });

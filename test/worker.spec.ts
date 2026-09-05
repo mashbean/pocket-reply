@@ -67,7 +67,7 @@ describe("pipeline", () => {
 
   it("marks takes ungrounded unless they cite a URL from the supplied positions, and gates replies", () => {
     const beats = [{ beatId: "b1", order: 1, title: "t", ache: "", theTurn: "", memberQids: ["q001"], representativeQid: "q001", bridgeToNext: "" }];
-    const positions = "我主張先做國際同儕審查。https://example.org/statement-2026";
+    const positions = "我主張先做國際同儕審查（https://example.org/statement-2026）。";
     const takes = normalizeTakes({ takes: [{ beatId: "b1", take: "先審查，再談延役 — 這是底線", citations: ["https://example.org/statement-2026", "https://fake.example/x"] }] }, beats, positions);
     expect(takes[0]).toMatchObject({ grounded: true, citations: ["https://example.org/statement-2026"] });
     expect(takes[0]?.take).not.toContain("—");
