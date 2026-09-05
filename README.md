@@ -1,5 +1,7 @@
 # Pocket Reply · 口袋回覆
 
+正式站：https://reply.mashbean.net
+
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/mashbean/pocket-reply)
 
 **Broad listening with a receipt.** 把一池觀眾提問（Call-in、Pocket Polis、Pocket Form 或任何 `id,interview,comment` CSV）變成：一條有開場與收尾的演講弧線、每一段一句落地的立場、**每位提問者一則親筆回覆**、一張公開的收據。方法來自 [Uncommon Ground](https://github.com/audreyt/uncommon-ground)（唐鳳與協作者，CC0）；這裡把八段流程做成**一個 Cloudflare Worker**：一個問題池一個 SQLite Durable Object，alarm 驅動四類 Workers AI 呼叫，不用跑腳本、不用帳號、不用金鑰。

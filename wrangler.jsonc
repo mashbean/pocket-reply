@@ -33,7 +33,7 @@
     "DAILY_NEURON_CEILING": "9000",
     "BUILD_SHA": ""
   },
-  // 正式網域之後放進 env.production 的 routes；Worker 名稱不可改。
+  // 正式網域只放在 env.production：Deploy Button 的複製者跑預設環境，不會搶走 reply.mashbean.net。Worker 名稱不可改。
   "env": {
     "production": {
       "name": "pocket-reply",
@@ -44,7 +44,8 @@
         ]
       },
       "ai": { "binding": "AI" },
-      "vars": { "AI_MODE": "live", "MAX_QUESTIONS": "400", "DAILY_NEURON_CEILING": "9000", "BUILD_SHA": "" }
+      "vars": { "AI_MODE": "live", "MAX_QUESTIONS": "400", "DAILY_NEURON_CEILING": "9000", "BUILD_SHA": "" },
+      "routes": [{ "pattern": "reply.mashbean.net", "custom_domain": true }]
     }
   },
   "observability": {
