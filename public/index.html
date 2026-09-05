@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pocket Reply 口袋回覆</title>
+  <meta name="description" content="把一池觀眾提問變成一條演講弧線、每位提問者一則親筆回覆、一張公開收據。Uncommon Ground 的方法，單一 Cloudflare Worker，免帳號免金鑰。" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<main>
+  <header class="site"><a href="/">Pocket Reply · 口袋回覆</a><a href="https://github.com/mashbean/pocket-reply" rel="noopener">原始碼</a></header>
+  <p class="kicker">Broad listening with a receipt</p>
+  <h1>每一位提問者，都拿到自己那一則回覆</h1>
+  <p class="lede">放入提問池（Call-in、Pocket Polis、Pocket Form 或任何 <code>id,interview,comment</code> CSV）。系統把提問歸成 4–10 個段落、排成一條有開場與收尾的弧線、為每段鍛一句立場（只能引用你提供的公開立場，引不到就標「未落地」），然後**逐一回覆每位提問者**：引用原話、說明它在弧線裡的真實角色（Crystalliser／Chorus／Bridge／Keeper）、帶著那一段的立場。最後是一張公開收據：N 位提問者 → M 段 → 0 位被落下。</p>
+
+  <form id="create" class="card">
+    <label for="title">活動名稱</label>
+    <input id="title" type="text" maxlength="120" required placeholder="例如：核電重啟審議 第一輪叩應" />
+    <label for="speaker">誰以自己的名義回覆<small>回覆會以這個人的口吻與名義寫出，請確認你有權這樣做。</small></label>
+    <input id="speaker" type="text" maxlength="80" required placeholder="例如：主持人、講者姓名、單位" />
+    <label for="standfirst">開場說明（選填）<small>顯示在收據最上方：這場活動是什麼、提問來自哪裡。</small></label>
+    <textarea id="standfirst" maxlength="1000" rows="2"></textarea>
+    <label for="positions">回覆者的公開立場（強烈建議）<small>貼上這個人真的說過、寫過的立場，附上網址。每段的「一句話立場」只能從這裡引用；引不到就會誠實標記「未落地」，不會捏造。</small></label>
+    <textarea id="positions" maxlength="6000" rows="5" placeholder="例如：我主張核電延役前必須通過國際同儕審查。https://…"></textarea>
+    <label for="language">回覆語言</label>
+    <select id="language"><option value="zh-Hant" selected>正體中文（台灣）</option><option value="en">English</option></select>
+    <label for="file">提問池 CSV</label>
+    <input id="file" type="file" accept=".csv,text/csv" />
+    <p class="hint">或貼上（需要 id 與 comment 欄；interview、upvotes、lens 可選）：</p>
+    <textarea id="csv" class="csv" placeholder="id,interview,comment,upvotes&#10;q1,阿德,我家離核二廠不到五公里…,16"></textarea>
+    <p class="hint">每池最多 <span id="max-questions">400</span> 則提問。約 50 則 ≈ 1,100 神經元、266 則 ≈ 4,500；免費額度每日 9,000，超過會自動分天續跑。</p>
+    <label class="consent"><input id="confirmed" type="checkbox" /> <span>我有權以上述回覆者的名義公開回覆這些提問；提問池除了提問者自己留下的名字外沒有其他直接識別資訊；公開收據前我會人工檢查每一則回覆。</span></label>
+    <button id="submit" class="button" type="submit">開始閉環</button>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </form>
+
+  <section id="result" class="card hidden">
+    <h2>已排入處理</h2>
+    <p class="links"><strong>公開收據：</strong><a id="receipt-link" href="#"></a></p>
+    <p class="links"><strong>管理連結（重試、刪除）：</strong><a id="manage-link" href="#"></a></p>
+    <p class="private">管理連結只顯示這一次，伺服器只存雜湊值。</p>
+  </section>
+
+  <h2>誠實規則（內建，不可關）</h2>
+  <p>每一則回覆都引用或忠實改寫提問者的原話；角色由結構決定（段落的代表提問＝Crystalliser、橋接兩種關切＝Bridge、同段三人以上＝Chorus、其餘＝Keeper），不是模型說了算。立場只能從你提供的公開立場引用，引不到就標「未落地」。收據自帶驗證：N/N 覆蓋、無空白、無複製貼上、每段都有立場。</p>
+
+  <footer>方法來自 <a href="https://github.com/audreyt/uncommon-ground" rel="noopener">Uncommon Ground</a>（唐鳳與協作者，CC0）；本專案把它做成單一 Cloudflare Worker，MIT 授權。回覆由模型起草、以回覆者名義發出：公開前請逐則檢查。</footer>
+</main>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

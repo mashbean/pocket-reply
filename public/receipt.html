@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>收據 · Pocket Reply</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<main>
+  <header class="site"><a href="/">Pocket Reply · 口袋回覆</a><span id="model" class="hint"></span></header>
+  <p class="kicker" id="kicker">收據</p>
+  <h1 id="title">載入中…</h1>
+  <p class="lede" id="standfirst"></p>
+
+  <section id="pending" class="card hidden">
+    <h2 id="pending-title">正在處理</h2>
+    <div class="progress"><i id="progress-bar" style="width:0%"></i></div>
+    <p id="pending-text" class="status"></p>
+    <p id="pending-error" class="error hidden"></p>
+    <div id="admin-actions" class="toolbar hidden"><button id="retry" class="button ghost" type="button">重新排程</button></div>
+  </section>
+
+  <section id="ready" class="hidden">
+    <div class="stats" id="stats"></div>
+    <p class="throughline" id="throughline"></p>
+    <p id="opening" class="lede"></p>
+    <div class="toolbar">
+      <input id="filter" type="search" placeholder="搜尋提問、名字或回覆" />
+      <a id="dl-json" class="button ghost" href="#">receipt.json</a>
+      <a id="dl-csv" class="button ghost" href="#">replies.csv</a>
+    </div>
+    <h2>弧線</h2>
+    <div id="arc"></div>
+    <h2 id="bridges-title">橋</h2>
+    <div id="bridges"></div>
+    <h2 id="voices-title">每一個聲音</h2>
+    <div id="voices"></div>
+    <p id="closing" class="throughline"></p>
+    <h2>驗證</h2>
+    <p id="verify" class="verify"></p>
+  </section>
+
+  <section id="admin" class="card hidden">
+    <h2>管理</h2>
+    <button id="delete" class="button ghost" type="button">刪除整份收據與所有回覆</button>
+    <p id="admin-status" class="status"></p>
+  </section>
+  <p id="error" class="error hidden"></p>
+
+  <footer>回覆由模型依 <a href="https://github.com/audreyt/uncommon-ground" rel="noopener">Uncommon Ground</a> 的方法起草，以回覆者名義發出；角色由結構決定；立場只引用回覆者提供的公開立場，引不到的標「未落地」。</footer>
+</main>
+<script type="module" src="/receipt.js"></script>
+</body>
+</html>

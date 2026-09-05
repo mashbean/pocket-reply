@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // 品牌名為 Pocket Reply（口袋回覆）；worker 名稱是 Durable Object 資料的錨點，改名等同切到一套空白資料。
+  "name": "pocket-reply",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-18",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/r/*"]
+  },
+  "durable_objects": {
+    "bindings": [
+      { "name": "LOOP", "class_name": "LoopRoom" },
+      { "name": "COORDINATOR", "class_name": "Coordinator" }
+    ]
+  },
+  "ai": {
+    "binding": "AI"
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["LoopRoom", "Coordinator"]
+    }
+  ],
+  "vars": {
+    "AI_MODE": "live",
+    // 免費方案的安全上限：每個問題池最多幾則提問
+    "MAX_QUESTIONS": "400",
+    "DAILY_NEURON_CEILING": "9000",
+    "BUILD_SHA": ""
+  },
+  // 正式網域之後放進 env.production 的 routes；Worker 名稱不可改。
+  "env": {
+    "production": {
+      "name": "pocket-reply",
+      "durable_objects": {
+        "bindings": [
+          { "name": "LOOP", "class_name": "LoopRoom" },
+          { "name": "COORDINATOR", "class_name": "Coordinator" }
+        ]
+      },
+      "ai": { "binding": "AI" },
+      "vars": { "AI_MODE": "live", "MAX_QUESTIONS": "400", "DAILY_NEURON_CEILING": "9000", "BUILD_SHA": "" }
+    }
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "head_sampling_rate": 0.1
+    }
+  }
+}
